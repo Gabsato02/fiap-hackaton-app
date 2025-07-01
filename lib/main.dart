@@ -18,8 +18,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  static const clientId = 'AIzaSyA73aVkVYsp3JD7jOs_Yylimq4vY9IxvEo';
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,7 +27,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/login',
       routes: {
-        '/login': (context) => Login(clientId: clientId),
+        '/login': (context) => Login(clientId: DefaultFirebaseOptions.currentPlatform.apiKey),
         '/home': (context) => const HomeTabs(),
       },
     );
