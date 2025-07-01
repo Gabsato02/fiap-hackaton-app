@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "401659988517",
+    "project_id": "fiap-m05-hackaton",
+    "storage_bucket": "fiap-m05-hackaton.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:401659988517:android:057c7fa361ad9a30ad8dcc",
+        "android_client_info": {
+          "package_name": "com.example.fiap_hackaton_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "401659988517-t14ou26iukf1qu16657263qk3acipjul.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIxHpCXTUZysfjw0SThSGGj2vxKapl0gk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "401659988517-t14ou26iukf1qu16657263qk3acipjul.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
