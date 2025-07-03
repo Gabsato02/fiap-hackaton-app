@@ -43,7 +43,7 @@ class HomeTabs extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: CustomAppBar(),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
             Sales(),
             Stock(),

@@ -31,7 +31,7 @@ class _SalesModalState extends State<SalesModal> {
         widget.open != oldWidget.open) {
       if (widget.currentSale != null) {
         productId = widget.currentSale!.productId;
-        quantity = widget.currentSale!.quantity;
+        quantity = widget.currentSale!.productQuantity;
         date = widget.currentSale!.date;
       } else {
         productId = null;

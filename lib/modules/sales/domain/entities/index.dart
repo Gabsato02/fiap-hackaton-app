@@ -8,13 +8,19 @@ class Product {
 
 class Sale {
   final String id;
-  final String productId;
-  final int quantity;
   final String date;
+  final String totalPrice;
+  final int productPrice;
+  final int productQuantity;
+  final String productId;
+  final String sellerId;
 
   Sale(
       {required this.id,
+      required this.date,
+      required this.totalPrice,
+      required this.productPrice,
+      required this.productQuantity,
       required this.productId,
-      required this.quantity,
-      required this.date});
+      required this.sellerId});
 }

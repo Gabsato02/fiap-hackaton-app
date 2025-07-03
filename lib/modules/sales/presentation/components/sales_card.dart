@@ -1,8 +1,10 @@
+import 'package:fiap_hackaton_app/modules/sales/domain/entities/index.dart';
 import 'package:fiap_hackaton_app/utils/index.dart';
 import 'package:flutter/material.dart';
 
 class SalesCard extends StatelessWidget {
-  const SalesCard({super.key});
+  final Sale sale;
+  const SalesCard({super.key, required this.sale});
 
   void _onDeletePressed(BuildContext context) async {
     final confirmed = await showConfirmDialog(
@@ -29,23 +31,23 @@ class SalesCard extends StatelessWidget {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
+              children: [
                 Text(
-                  'Produto',
+                  'Venda',
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.green),
                 ),
-                Text('Data'),
+                Text(sale.date),
               ],
             ),
             const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text('Quantidade vendida'),
-                Text('Valor'),
+              children: [
+                Text('${sale.productQuantity} vendidos'),
+                Text('R\$ ${sale.totalPrice}'),
               ],
             ),
             const SizedBox(height: 16),
