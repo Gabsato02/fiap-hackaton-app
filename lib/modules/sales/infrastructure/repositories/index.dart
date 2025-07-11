@@ -20,11 +20,11 @@ class FirestoreService {
     return _db.collection('sales').add(sale);
   }
 
-  static Future<void> editSale(String saleId, Sale sale) {
+  static Future<void> editSale(String saleId, Map<String, dynamic> sale) {
     return _db
         .collection('sales')
         .doc(saleId)
-        .set(sale as Map<String, dynamic>, SetOptions(merge: true));
+        .set(sale, SetOptions(merge: true));
   }
 
   static Future<void> updateProductQuantity(String productId, int quantity) {

@@ -42,6 +42,7 @@ class _SalesModalState extends State<SalesModal> {
     super.initState();
     _quantityController = TextEditingController(text: quantity.toString());
     _dateController = TextEditingController(text: '');
+    populateFromCurrentSale();
   }
 
   @override
@@ -51,23 +52,28 @@ class _SalesModalState extends State<SalesModal> {
     super.dispose();
   }
 
+  void populateFromCurrentSale() {
+    if (widget.currentSale != null) {
+      productId = widget.currentSale!.product_id;
+      quantity = widget.currentSale!.product_quantity;
+      selectedDate = DateTime.tryParse(widget.currentSale!.date);
+    } else {
+      productId = '';
+      quantity = 1;
+      selectedDate = null;
+    }
+
+    _quantityController.text = quantity.toString();
+    _dateController.text = formattedDate;
+  }
+
   @override
   void didUpdateWidget(SalesModal oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (widget.currentSale != oldWidget.currentSale ||
         widget.open != oldWidget.open) {
-      if (widget.currentSale != null) {
-        productId = widget.currentSale!.product_id;
-        quantity = widget.currentSale!.product_quantity;
-        selectedDate = DateTime.tryParse(widget.currentSale!.date);
-      } else {
-        productId = '';
-        quantity = 1;
-        selectedDate = null;
-      }
-      _quantityController.text = quantity.toString();
-      _dateController.text = formattedDate;
+      populateFromCurrentSale();
       setState(() {});
     }
   }

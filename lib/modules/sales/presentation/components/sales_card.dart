@@ -6,10 +6,13 @@ class SalesCard extends StatelessWidget {
   final Sale sale;
   final void Function(BuildContext context, Sale sale) onDeletePressed;
 
+  final void Function(BuildContext context, Sale sale) onEditPressed;
+
   const SalesCard({
     super.key,
     required this.sale,
     required this.onDeletePressed,
+    required this.onEditPressed,
   });
 
   @override
@@ -48,7 +51,9 @@ class SalesCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 FilledButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    onEditPressed(context, sale);
+                  },
                   child: const Text('Editar'),
                 ),
                 const SizedBox(width: 8),

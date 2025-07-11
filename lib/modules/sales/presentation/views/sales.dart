@@ -88,8 +88,7 @@ class _SalesState extends State<Sales> {
     if (payload.sale_id == null || payload.sale_id!.isEmpty) {
       await FirestoreService.saveSale(payload.toJson());
     } else {
-      await FirestoreService.editSale(payload.sale_id!, payload);
-      // setSelectedSale(null); // supondo que setSelectedSale existe no seu estado
+      await FirestoreService.editSale(payload.sale_id!, payload.toJson());
     }
 
     final product = products.firstWhere((p) => p.id == sale.product_id);
@@ -101,7 +100,7 @@ class _SalesState extends State<Sales> {
     await _fetchProducts();
   }
 
-  void _openSalesModal() {
+  void _openSalesModal(Sale? currentSale) {
     showDialog(
       context: context,
       builder: (context) => SalesModal(
@@ -112,7 +111,7 @@ class _SalesState extends State<Sales> {
           Navigator.of(context).pop();
         },
         products: products,
-        currentSale: null,
+        currentSale: currentSale,
       ),
     );
   }
@@ -128,9 +127,7 @@ class _SalesState extends State<Sales> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: products.isEmpty
-            ? null
-            : _openSalesModal,
+        onPressed: products.isEmpty ? null : () => _openSalesModal(null),
         label: const Text('Adicionar Venda'),
         icon: const Icon(Icons.add),
       ),
@@ -149,7 +146,10 @@ class _SalesState extends State<Sales> {
             SalesList(
               sales: sales,
               isLoading: isLoading,
-              refreshList: _fetchSales, // passa a função de refresh
+              refreshList: _fetchSales,
+              openSalesModal: (context, sale) async {
+                _openSalesModal(sale);
+              },
             ),
           ],
         ),

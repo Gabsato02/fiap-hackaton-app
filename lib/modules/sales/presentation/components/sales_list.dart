@@ -2,6 +2,7 @@ import 'package:fiap_hackaton_app/domain/entities/index.dart';
 import 'package:fiap_hackaton_app/modules/sales/infrastructure/repositories/index.dart';
 import 'package:fiap_hackaton_app/modules/sales/presentation/components/sales_card.dart';
 import 'package:fiap_hackaton_app/modules/sales/presentation/components/sales_filter.dart';
+import 'package:fiap_hackaton_app/modules/sales/presentation/components/sales_modal.dart';
 import 'package:fiap_hackaton_app/utils/index.dart';
 import 'package:flutter/material.dart';
 
@@ -9,12 +10,14 @@ class SalesList extends StatelessWidget {
   final List<Sale> sales;
   final bool isLoading;
   final Future<void> Function() refreshList;
+  final Future<void> Function(BuildContext context, Sale sale) openSalesModal;
 
   const SalesList({
     super.key,
     required this.sales,
     this.isLoading = false,
     required this.refreshList,
+    required this.openSalesModal,
   });
 
   Future<void> _onDeletePressed(BuildContext context, Sale sale) async {
@@ -61,6 +64,8 @@ class SalesList extends StatelessWidget {
                     sale: sale,
                     onDeletePressed: (context, sale) =>
                         _onDeletePressed(context, sale),
+                    onEditPressed: (context, sale) =>
+                        openSalesModal(context, sale),
                   ),
                 )),
         ],
