@@ -1,23 +1,16 @@
-import 'package:fiap_hackaton_app/modules/sales/domain/entities/index.dart';
+import 'package:fiap_hackaton_app/domain/entities/index.dart';
 import 'package:fiap_hackaton_app/utils/index.dart';
 import 'package:flutter/material.dart';
 
 class SalesCard extends StatelessWidget {
   final Sale sale;
-  const SalesCard({super.key, required this.sale});
+  final void Function(BuildContext context, Sale sale) onDeletePressed;
 
-  void _onDeletePressed(BuildContext context) async {
-    final confirmed = await showConfirmDialog(
-        context, 'Confirmar exclusão', 'Tem certeza que deseja apagar?');
-
-    if (confirmed == true) {
-      // usuário confirmou
-      print('Excluindo...');
-    } else {
-      // cancelou ou fechou o modal
-      print('Cancelado');
-    }
-  }
+  const SalesCard({
+    super.key,
+    required this.sale,
+    required this.onDeletePressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,21 +26,21 @@ class SalesCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Venda',
-                  style: TextStyle(
+                  sale.product_name,
+                  style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.green),
                 ),
-                Text(sale.date),
+                Text(formatDate(sale.date)),
               ],
             ),
             const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('${sale.productQuantity} vendidos'),
-                Text('R\$ ${sale.totalPrice}'),
+                Text('${sale.product_quantity} vendidos'),
+                Text('R\$ ${sale.total_price}'),
               ],
             ),
             const SizedBox(height: 16),
@@ -61,7 +54,7 @@ class SalesCard extends StatelessWidget {
                 const SizedBox(width: 8),
                 ElevatedButton(
                   onPressed: () {
-                    _onDeletePressed(context);
+                    onDeletePressed(context, sale);
                   },
                   child: const Text('Excluir'),
                 ),

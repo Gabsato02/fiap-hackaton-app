@@ -1,8 +1,11 @@
-import 'package:fiap_hackaton_app/modules/sales/domain/entities/index.dart';
+import 'package:fiap_hackaton_app/domain/entities/index.dart';
 import 'package:fiap_hackaton_app/modules/sales/presentation/components/sales_chart.dart';
 import 'package:fiap_hackaton_app/modules/sales/presentation/components/sales_list.dart';
 import 'package:fiap_hackaton_app/modules/sales/presentation/components/sales_modal.dart';
 import 'package:flutter/material.dart';
+import 'package:fiap_hackaton_app/store/index.dart';
+import 'package:provider/provider.dart'; // ajuste o path conforme necessário
+import 'package:fiap_hackaton_app/modules/sales/infrastructure/repositories/index.dart';
 
 class Sales extends StatefulWidget {
   const Sales({Key? key}) : super(key: key);
@@ -12,56 +15,90 @@ class Sales extends StatefulWidget {
 }
 
 class _SalesState extends State<Sales> {
-  final List<Product> products = [
-    Product(id: '1', name: 'Produto A', price: 12.5),
-    Product(id: '2', name: 'Produto B', price: 9.99),
-  ];
-
+  List<Product> products = [];
   List<Sale> sales = [];
   bool isLoading = false;
+  String? userId;
 
   @override
   void initState() {
     super.initState();
-    _fetchSales();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      userId = context.read<GlobalState>().userInfo?.id;
+      if (userId != null) {
+        _fetchSales();
+      }
+    });
+
+    _fetchProducts();
+  }
+
+  Future<void> _fetchProducts() async {
+    try {
+      final snapshot = await FirestoreService.getStockProducts();
+
+      List<Product> stockProducts = snapshot.docs.map((doc) {
+        return Product.fromJson(doc.id, doc.data());
+      }).toList();
+
+      setState(() {
+        products = stockProducts;
+      });
+    } catch (e) {
+      print('Erro ao buscar produtos: $e');
+    }
   }
 
   Future<void> _fetchSales() async {
-    isLoading = true;
-    await Future.delayed(const Duration(seconds: 2));
-    setState(() {
-      sales = [
-        Sale(
-          id: 's1',
-          date: '2025-07-01T10:00:00Z',
-          totalPrice: '75.00',
-          productPrice: 25,
-          productQuantity: 3,
-          productId: '1',
-          sellerId: 'u1',
-        ),
-        Sale(
-          id: 's2',
-          date: '2025-07-02T14:30:00Z',
-          totalPrice: '45.00',
-          productPrice: 15,
-          productQuantity: 3,
-          productId: '2',
-          sellerId: 'u2',
-        ),
-        Sale(
-          id: 's3',
-          date: '2025-07-03T09:15:00Z',
-          totalPrice: '120.00',
-          productPrice: 40,
-          productQuantity: 3,
-          productId: '3',
-          sellerId: 'u1',
-        ),
-      ];
+    if (userId == null) return;
 
-      isLoading = false;
+    setState(() {
+      isLoading = true;
     });
+
+    try {
+      final snapshot = await FirestoreService.getUserSales(userId!);
+
+      List<Sale> userSales = snapshot.docs.map((doc) {
+        return Sale.fromJson(doc.id, doc.data());
+      }).toList();
+
+      setState(() {
+        sales = userSales;
+        isLoading = false;
+      });
+    } catch (e) {
+      print('Erro ao buscar vendas: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _saveSale(Sale sale) async {
+    final payload = sale;
+
+    if (payload.sale_id == null || payload.sale_id!.isEmpty) {}
+  }
+
+  Future<void> handleSaveSale(Sale sale) async {
+    final payload = sale;
+
+    if (payload.sale_id == null || payload.sale_id!.isEmpty) {
+      await FirestoreService.saveSale(payload.toJson());
+    } else {
+      await FirestoreService.editSale(payload.sale_id!, payload);
+      // setSelectedSale(null); // supondo que setSelectedSale existe no seu estado
+    }
+
+    final product = products.firstWhere((p) => p.id == sale.product_id);
+    final newQuantity = product.quantity - sale.product_quantity;
+
+    await FirestoreService.updateProductQuantity(sale.product_id, newQuantity);
+
+    await _fetchSales();
+    await _fetchProducts();
   }
 
   void _openSalesModal() {
@@ -70,6 +107,10 @@ class _SalesState extends State<Sales> {
       builder: (context) => SalesModal(
         open: true,
         onClose: () => Navigator.of(context).pop(),
+        onSave: (Sale sale) async {
+          await handleSaveSale(sale);
+          Navigator.of(context).pop();
+        },
         products: products,
         currentSale: null,
       ),
@@ -87,7 +128,9 @@ class _SalesState extends State<Sales> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _openSalesModal,
+        onPressed: products.isEmpty
+            ? null
+            : _openSalesModal,
         label: const Text('Adicionar Venda'),
         icon: const Icon(Icons.add),
       ),
@@ -100,10 +143,14 @@ class _SalesState extends State<Sales> {
               title: 'Vendas por produto',
               data: salesData,
               colors: chartColors,
-              isLoading: isLoading, 
+              isLoading: isLoading,
             ),
             const SizedBox(height: 32),
-            SalesList(sales: sales, isLoading: isLoading),
+            SalesList(
+              sales: sales,
+              isLoading: isLoading,
+              refreshList: _fetchSales, // passa a função de refresh
+            ),
           ],
         ),
       ),

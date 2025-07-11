@@ -2,17 +2,24 @@ import 'package:fiap_hackaton_app/modules/goals/presentation/views/goals.dart';
 import 'package:fiap_hackaton_app/modules/login/presentation/views/login.dart';
 import 'package:fiap_hackaton_app/modules/sales/presentation/views/sales.dart';
 import 'package:fiap_hackaton_app/modules/stock/presentation/views/STOCK.dart';
+import 'package:fiap_hackaton_app/store/index.dart';
 import 'package:flutter/material.dart';
 import 'package:fiap_hackaton_app/modules/host/presentation/components/custom_appbar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => GlobalState(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -27,7 +34,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/login',
       routes: {
-        '/login': (context) => Login(clientId: DefaultFirebaseOptions.currentPlatform.apiKey),
+        '/login': (context) =>
+            Login(clientId: DefaultFirebaseOptions.currentPlatform.apiKey),
         '/home': (context) => const HomeTabs(),
       },
     );
