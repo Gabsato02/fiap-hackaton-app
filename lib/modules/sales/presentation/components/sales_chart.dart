@@ -1,19 +1,33 @@
+import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class SalesChart extends StatelessWidget {
   final String title;
-  final Map<String, double> data;
-  final List<Color> colors;
+  final Map<String, int> data;
   final bool isLoading;
 
-  const SalesChart({
+  SalesChart({
     super.key,
     required this.title,
     required this.data,
-    required this.colors,
     this.isLoading = false,
-  });
+  }) : colors = _generateColors(data.keys);
+
+  final Map<String, Color> colors;
+
+  static Map<String, Color> _generateColors(Iterable<String> keys) {
+    final random = Random();
+    return {
+      for (var key in keys)
+        key: Color.fromARGB(
+          255,
+          random.nextInt(200) + 30, // evita tons muito escuros
+          random.nextInt(200) + 30,
+          random.nextInt(200) + 30,
+        )
+    };
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,18 +69,17 @@ class SalesChart extends StatelessWidget {
           spacing: 12,
           runSpacing: 8,
           children: data.entries.map((entry) {
-            final index = data.keys.toList().indexOf(entry.key);
-            final color = colors[index % colors.length];
             return Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 CircleAvatar(
-                  backgroundColor: color,
                   radius: 6,
+                  backgroundColor: colors[entry.key],
                 ),
                 const SizedBox(width: 6),
                 Text(
-                    '${entry.key} (${(entry.value / total * 100).toStringAsFixed(1)}%)'),
+                  '${entry.key} (${(entry.value / total * 100).toStringAsFixed(0)}%)',
+                ),
               ],
             );
           }).toList(),
@@ -79,12 +92,11 @@ class SalesChart extends StatelessWidget {
     final total = data.values.fold(0.0, (a, b) => a + b);
 
     return data.entries.map((entry) {
-      final index = data.keys.toList().indexOf(entry.key);
       final percentage = (entry.value / total) * 100;
       return PieChartSectionData(
-        color: colors[index % colors.length],
-        value: entry.value,
-        title: '${percentage.toStringAsFixed(1)}%',
+        value: entry.value.toDouble(),
+        title: '${percentage.toStringAsFixed(0)}%',
+        color: colors[entry.key],
         radius: 60,
         titleStyle: const TextStyle(
           fontSize: 14,

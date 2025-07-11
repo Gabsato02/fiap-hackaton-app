@@ -17,6 +17,7 @@ class Sales extends StatefulWidget {
 class _SalesState extends State<Sales> {
   List<Product> products = [];
   List<Sale> sales = [];
+  Map<String, int> groupedSales = {};
   bool isLoading = false;
   String? userId;
 
@@ -32,6 +33,23 @@ class _SalesState extends State<Sales> {
     });
 
     _fetchProducts();
+  }
+
+  Map<String, int> groupSalesByProduct(List<Sale> sales) {
+    final Map<String, int> result = {};
+
+    for (final sale in sales) {
+      final String productName = sale.product_name;
+      final int total = sale.total_price;
+
+      if (result.containsKey(productName)) {
+        result[productName] = result[productName]! + total;
+      } else {
+        result[productName] = total;
+      }
+    }
+
+    return result;
   }
 
   Future<void> _fetchProducts() async {
@@ -67,6 +85,7 @@ class _SalesState extends State<Sales> {
       setState(() {
         sales = userSales;
         isLoading = false;
+        groupedSales = groupSalesByProduct(sales);
       });
     } catch (e) {
       print('Erro ao buscar vendas: $e');
@@ -74,12 +93,6 @@ class _SalesState extends State<Sales> {
         isLoading = false;
       });
     }
-  }
-
-  Future<void> _saveSale(Sale sale) async {
-    final payload = sale;
-
-    if (payload.sale_id == null || payload.sale_id!.isEmpty) {}
   }
 
   Future<void> handleSaveSale(Sale sale) async {
@@ -118,13 +131,6 @@ class _SalesState extends State<Sales> {
 
   @override
   Widget build(BuildContext context) {
-    final salesData = {
-      'Produto A': 50.0,
-      'Produto B': 30.0,
-    };
-
-    final chartColors = [Colors.blue, Colors.orange];
-
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         onPressed: products.isEmpty ? null : () => _openSalesModal(null),
@@ -138,8 +144,7 @@ class _SalesState extends State<Sales> {
           children: [
             SalesChart(
               title: 'Vendas por produto',
-              data: salesData,
-              colors: chartColors,
+              data: groupedSales,
               isLoading: isLoading,
             ),
             const SizedBox(height: 32),
