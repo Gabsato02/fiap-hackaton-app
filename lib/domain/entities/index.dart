@@ -1,16 +1,17 @@
-// ignore_for_file: non_constant_identifier_names
-
 class Product {
   final String id;
   final String name;
   final int price;
   final int quantity;
+  final String? status;
 
-  Product(
-      {required this.id,
-      required this.name,
-      required this.price,
-      required this.quantity});
+  Product({
+    required this.id,
+    required this.name,
+    required this.price,
+    required this.quantity,
+    this.status,
+  });
 
   factory Product.fromJson(String $id, Map<String, dynamic> json) {
     return Product(
@@ -18,6 +19,7 @@ class Product {
       name: json['name'] ?? '',
       price: json['price'] ?? 0,
       quantity: json['quantity'] ?? 0,
+      status: json['status'],
     );
   }
 }
@@ -33,8 +35,8 @@ class Sale {
   final String seller_id;
   final String? sale_id;
 
-  Sale({
-      this.id,
+  Sale(
+      {this.id,
       required this.date,
       required this.total_price,
       required this.product_name,

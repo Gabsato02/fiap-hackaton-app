@@ -1,5 +1,6 @@
 import 'package:fiap_hackaton_app/modules/goals/presentation/views/goals.dart';
 import 'package:fiap_hackaton_app/modules/login/presentation/views/login.dart';
+import 'package:fiap_hackaton_app/modules/production/presentation/views/production_dashboard.dart'; // Importe a nova tela
 import 'package:fiap_hackaton_app/modules/sales/presentation/views/sales.dart';
 import 'package:fiap_hackaton_app/modules/stock/presentation/views/stock.dart';
 import 'package:fiap_hackaton_app/store/index.dart';
@@ -48,12 +49,13 @@ class HomeTabs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         appBar: CustomAppBar(),
         body: TabBarView(
           children: [
             Sales(),
+            ProductionDashboard(),
             Stock(),
             Goals(),
           ],
@@ -61,6 +63,7 @@ class HomeTabs extends StatelessWidget {
         bottomNavigationBar: const TabBar(
           tabs: [
             Tab(icon: Icon(Icons.shopping_cart), text: "Vendas"),
+            Tab(icon: Icon(Icons.agriculture), text: "Produção"),
             Tab(icon: Icon(Icons.inventory), text: "Estoque"),
             Tab(icon: Icon(Icons.flag), text: "Metas"),
           ],
