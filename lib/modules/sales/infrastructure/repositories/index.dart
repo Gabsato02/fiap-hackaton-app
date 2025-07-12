@@ -12,7 +12,19 @@ class FirestoreService {
   }
 
   static Future<QuerySnapshot<Map<String, dynamic>>> getAllStockProducts() {
-    return _db.collection('stock_products').get();
+    return _db.collection('stock_products').orderBy('name').get();
+  }
+
+  static Future<void> addProduct(Map<String, dynamic> data) {
+    return _db.collection('stock_products').add(data);
+  }
+
+  static Future<void> updateProduct(String id, Map<String, dynamic> data) {
+    return _db.collection('stock_products').doc(id).update(data);
+  }
+
+  static Future<void> deleteProduct(String id) {
+    return _db.collection('stock_products').doc(id).delete();
   }
 
   static Future<void> updateProductQuantity(String productId, int quantity) {
