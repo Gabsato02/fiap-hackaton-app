@@ -20,8 +20,6 @@ O módulo de vendas permite o registro e acompanhamento completo das transaçõe
 - **Dashboard Visual:** Um gráfico de pizza (`PieChart`) exibe a distribuição percentual das vendas por produto, oferecendo insights rápidos sobre os itens mais vendidos.
 - **Integração com Estoque:** Ao registrar uma venda, a quantidade do produto é automaticamente deduzida do estoque.
 
-\<hr\>
-
 ### 2\. 🌱 Produção
 
 Gerencie todo o ciclo de produção agrícola, desde o plantio até a colheita.
@@ -30,8 +28,6 @@ Gerencie todo o ciclo de produção agrícola, desde o plantio até a colheita.
 - **Adição e Edição:** Registre novas atividades de produção e atualize as existentes.
 - **Colheita Integrada:** Ao marcar um lote como "colhido", a quantidade produzida é automaticamente adicionada ao módulo de **Estoque**, pronta para ser vendida.
 
-\<hr\>
-
 ### 3\. 📦 Estoque
 
 Mantenha um catálogo detalhado dos seus produtos e controle os níveis de inventário em tempo real.
@@ -39,8 +35,6 @@ Mantenha um catálogo detalhado dos seus produtos e controle os níveis de inven
 - **Catálogo de Produtos:** Adicione, edite ou remova produtos do catálogo, definindo nome, preço e quantidade inicial.
 - **Visualização Gráfica:** Um gráfico de barras (`BarChart`) mostra a distribuição das quantidades de cada produto no estoque.
 - **Valor Total do Estoque:** Um card de destaque exibe o valor monetário total do inventário, calculado em tempo real.
-
-\<hr\>
 
 ### 4\. 🏆 Metas
 
