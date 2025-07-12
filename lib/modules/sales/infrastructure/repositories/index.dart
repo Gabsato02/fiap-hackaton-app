@@ -5,6 +5,47 @@ import 'package:fiap_hackaton_app/domain/entities/production.dart';
 class FirestoreService {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
 
+  static Future<QuerySnapshot<Map<String, dynamic>>> getGoals(String userId) {
+    return _db
+        .collection('goals')
+        .where('userId', isEqualTo: userId)
+        .orderBy('endDate', descending: true)
+        .get();
+  }
+
+  static Future<void> addGoal(Map<String, dynamic> data) {
+    return _db.collection('goals').add(data);
+  }
+
+  static Future<void> updateGoal(String id, Map<String, dynamic> data) {
+    return _db.collection('goals').doc(id).update(data);
+  }
+
+  static Future<void> deleteGoal(String id) {
+    return _db.collection('goals').doc(id).delete();
+  }
+
+  static Future<QuerySnapshot<Map<String, dynamic>>> getSalesByDateRange(
+      String userId, DateTime start, DateTime end) {
+    return _db
+        .collection('sales')
+        .where('seller_id', isEqualTo: userId)
+        .where('date', isGreaterThanOrEqualTo: start.toIso8601String())
+        .where('date', isLessThanOrEqualTo: end.toIso8601String())
+        .get();
+  }
+
+  static Future<QuerySnapshot<Map<String, dynamic>>>
+      getHarvestedProductionsByDateRange(DateTime start, DateTime end) {
+    return _db
+        .collection('productions')
+        .where('status', isEqualTo: 'harvested')
+        .where('creationDate',
+            isGreaterThanOrEqualTo: Timestamp.fromDate(start))
+        .where('creationDate', isLessThanOrEqualTo: Timestamp.fromDate(end))
+        .get();
+  }
+
   static Future<QuerySnapshot<Map<String, dynamic>>> getStockProducts() {
     final q =
         _db.collection('stock_products').where('quantity', isGreaterThan: 0);
