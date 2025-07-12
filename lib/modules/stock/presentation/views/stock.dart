@@ -49,7 +49,7 @@ class _StockState extends State<Stock> {
 
   String get _formattedTotalStockValue {
     final format = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
-    return format.format(_totalStockValue / 100);
+    return format.format(_totalStockValue);
   }
 
   void _openStockModal(Product? product) {

@@ -16,7 +16,7 @@ class StockCard extends StatelessWidget {
 
   String _formatCurrency(int value) {
     final format = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
-    return format.format(value / 100);
+    return format.format(value);
   }
 
   @override
