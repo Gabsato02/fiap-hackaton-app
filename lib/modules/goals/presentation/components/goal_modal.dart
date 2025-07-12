@@ -132,9 +132,7 @@ class _GoalModalState extends State<GoalModal> {
                 TextFormField(
                   controller: _targetController,
                   decoration: InputDecoration(
-                    labelText: isSales
-                        ? 'Valor Alvo (em centavos)'
-                        : 'Quantidade Alvo',
+                    labelText: isSales ? 'Valor Alvo ' : 'Quantidade Alvo',
                     border: const OutlineInputBorder(),
                     prefixText: isSales ? 'R\$ ' : null,
                   ),

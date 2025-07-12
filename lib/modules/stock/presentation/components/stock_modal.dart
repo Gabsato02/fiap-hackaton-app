@@ -112,7 +112,7 @@ class _StockModalState extends State<StockModal> {
                 TextFormField(
                   controller: _priceController,
                   decoration: const InputDecoration(
-                      labelText: 'Preço (em centavos)',
+                      labelText: 'Preço ',
                       border: OutlineInputBorder(),
                       prefixText: 'R\$ '),
                   keyboardType: TextInputType.number,
