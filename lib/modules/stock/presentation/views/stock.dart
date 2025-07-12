@@ -5,7 +5,6 @@ class Stock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(child: Text('ESTOQUE')));
+    return Scaffold(body: Center(child: Text('ESTOQUE')));
   }
 }

@@ -1,7 +1,7 @@
 import 'package:fiap_hackaton_app/modules/goals/presentation/views/goals.dart';
 import 'package:fiap_hackaton_app/modules/login/presentation/views/login.dart';
 import 'package:fiap_hackaton_app/modules/sales/presentation/views/sales.dart';
-import 'package:fiap_hackaton_app/modules/stock/presentation/views/STOCK.dart';
+import 'package:fiap_hackaton_app/modules/stock/presentation/views/stock.dart';
 import 'package:fiap_hackaton_app/store/index.dart';
 import 'package:flutter/material.dart';
 import 'package:fiap_hackaton_app/modules/host/presentation/components/custom_appbar.dart';
