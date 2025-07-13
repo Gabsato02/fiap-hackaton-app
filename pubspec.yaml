@@ -2,35 +2,30 @@ name: fiap_hackaton_app
 description: "A new Flutter project."
 publish_to: "none"
 version: 1.0.0+1
-
 environment:
   sdk: ^3.6.1
-
 dependencies:
   flutter:
     sdk: flutter
-
   flutter_localizations:
     sdk: flutter
-
   cupertino_icons: ^1.0.8
   firebase_auth: ^5.6.0
   firebase_ui_auth: ^1.17.0
   firebase_core: ^3.14.0
   google_sign_in: ^6.3.0
   firebase_ui_oauth_google: ^1.4.2
-
   firebase_ui_localizations: ^1.2.0
-
   fl_chart: ^0.71.0
   cloud_firestore: ^5.6.11
   provider: ^6.1.5
   intl: ^0.20.2
+  flutter_local_notifications: ^19.3.0
+  badges: ^3.1.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
-
 flutter:
   uses-material-design: true
