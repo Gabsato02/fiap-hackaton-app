@@ -1,3 +1,4 @@
+import 'package:fiap_hackaton_app/modules/auth/presentation/views/auth_wrapper.dart';
 import 'package:fiap_hackaton_app/modules/goals/presentation/views/goals.dart';
 import 'package:fiap_hackaton_app/modules/login/presentation/views/login.dart';
 import 'package:fiap_hackaton_app/modules/production/presentation/views/production_dashboard.dart';
@@ -46,11 +47,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
-      initialRoute: '/login',
+      home: const AuthWrapper(),
       routes: {
-        '/login': (context) =>
-            Login(clientId: DefaultFirebaseOptions.currentPlatform.apiKey),
-        '/home': (context) => const HomeTabs(),
         '/notifications': (context) => const NotificationScreen(),
       },
     );

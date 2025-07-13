@@ -13,7 +13,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         'Deseja sair? Você precisará fazer login novamente para acessar o sistema.');
     if (confirmed == true) {
       await FirebaseAuth.instance.signOut();
-      Navigator.pushReplacementNamed(context, '/login');
     }
   }
 

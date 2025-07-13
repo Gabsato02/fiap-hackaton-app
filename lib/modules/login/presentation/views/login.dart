@@ -7,19 +7,15 @@ import 'package:fiap_hackaton_app/store/index.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key, required this.clientId});
-
   final String clientId;
 
   @override
   Widget build(BuildContext context) {
     void onSignedIn() {
       final firebaseUser = FirebaseAuth.instance.currentUser;
-
       if (firebaseUser != null) {
         context.read<GlobalState>().setUserInfoFromFirebase(firebaseUser);
       }
-
-      Navigator.pushReplacementNamed(context, '/home');
     }
 
     return SignInScreen(
