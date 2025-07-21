@@ -19,24 +19,35 @@ class Production {
 
   factory Production.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data()!;
+    dynamic creationDateData = data['creationDate'];
+    DateTime parsedCreationDate;
+
+    if (creationDateData is Timestamp) {
+      parsedCreationDate = creationDateData.toDate();
+    } else if (creationDateData is String) {
+      parsedCreationDate =
+          DateTime.tryParse(creationDateData) ?? DateTime.now();
+    } else {
+      parsedCreationDate = DateTime.now();
+    }
+
     return Production(
       id: doc.id,
       productId: data['productId'] ?? '',
       productName: data['productName'] ?? '',
       quantity: data['quantity'] ?? 0,
       status: data['status'] ?? 'waiting',
-      creationDate: (data['creationDate'] as Timestamp).toDate(),
+      creationDate: parsedCreationDate,
     );
   }
 
-  // <-- NOVO MÉTODO -->
   Map<String, dynamic> toJson() {
     return {
       'productId': productId,
       'productName': productName,
       'quantity': quantity,
       'status': status,
-      'creationDate': creationDate,
+      'creationDate': Timestamp.fromDate(creationDate),
     };
   }
 }
